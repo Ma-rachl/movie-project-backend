@@ -7,8 +7,8 @@ import ReviewRoutes from './reviews/routes.js';
 import "dotenv/config"; 
 
 
- const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
-//  const CONNECTION_STRING = 'mongodb://127.0.0.1:27017/movie';
+ // const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
+  const CONNECTION_STRING = 'mongodb://127.0.0.1:27017/movie';
 mongoose.connect(CONNECTION_STRING);
 
 import session from 'express-session';

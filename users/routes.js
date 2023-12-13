@@ -170,6 +170,23 @@ function UserRoutes(app) {
 
     };
 
+    const deleteFollowing = async(req, res) => {
+        console.log("IN delete following");
+        // adds this user to the other user's follower list
+        try{
+            const { userId,followerId } = req.params;
+            const follow = await dao.deleteFollower(followerId,userId);
+
+            const following = await dao.deleteFollowing(followerId,userId);
+
+            res.status(200).json({ message: 'Follower removed successfully' });
+        }catch (e) {
+            res.status(404).json({ error: 'follower error ' });
+        }
+
+
+
+    };
 
 
 
@@ -208,6 +225,7 @@ function UserRoutes(app) {
     app.post("/api/users/account", account);
 
     app.delete("/api/users/followers/:userId/:followerId", deleteFollower);
+    app.delete("/api/users/following/:userId/:followerId", deleteFollowing);
     app.get("/api/users/followers/:userId", findAllFollowersByUserId);
     app.get("/api/users/following/:userId", findAllFollowingByUserId);
     app.post("/api/users/follow", follow);
