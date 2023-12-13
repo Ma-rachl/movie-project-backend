@@ -25,7 +25,7 @@ function UserRoutes(app) {
         res.json(users);
     };
 
-  
+
 
     const findUserById = async (req, res) => {
         console.log("IN find user by id");
@@ -126,7 +126,7 @@ function UserRoutes(app) {
         console.log(req.session['currentUser']);
         res.json(req.session['currentUser']);
     };
-    
+
 
 
     const signout =async (req, res) => {
@@ -147,10 +147,32 @@ function UserRoutes(app) {
         }catch (e) {
             res.status(404).json({ error: 'follower error ' });
         }
-  
 
-      
+
+
     };
+
+    const deleteFollower = async(req, res) => {
+        console.log("IN delete follower");
+        // adds this user to the other user's follower list
+        try{
+            const { userId,followerId } = req.params;
+            const follow = await dao.deleteFollower(userId,followerId);
+
+            const following = await dao.deleteFollowing(userId,followerId);
+
+            res.status(200).json({ message: 'Follower removed successfully' });
+        }catch (e) {
+            res.status(404).json({ error: 'follower error ' });
+        }
+
+
+
+    };
+
+
+
+
 
     const findAllFollowersByUserId = async(req, res) => {
         console.log("IN find all followers");
@@ -185,7 +207,7 @@ function UserRoutes(app) {
     app.post("/api/users/signout", signout);
     app.post("/api/users/account", account);
 
-
+    app.delete("/api/users/followers/:userId/:followerId", deleteFollower);
     app.get("/api/users/followers/:userId", findAllFollowersByUserId);
     app.get("/api/users/following/:userId", findAllFollowingByUserId);
     app.post("/api/users/follow", follow);
